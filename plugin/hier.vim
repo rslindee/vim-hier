@@ -73,8 +73,12 @@ function! s:Hier(clearonly)
 					continue
 				endif
 
-				if i.lnum > 0
-					call matchadd(hi_group, '\%'.i.lnum.'l')
+				let lastcol = col([i.lnum, '$'])
+				if i.lnum > 0 && i.col
+					let c = (lastcol == i.col) ? i.col - 2 : i.col - 1
+					call matchadd(hi_group, '\%'.i.lnum.'l\%>' . c . 'c\%<' . lastcol . 'c')
+				elseif i.lnum > 0
+					call matchadd(hi_group, '\%'.i.lnum.'l\%<' . lastcol . 'c')
 				elseif i.pattern != ''
 					call matchadd(hi_group, i.pattern)
 				endif
