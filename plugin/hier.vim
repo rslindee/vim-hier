@@ -87,11 +87,22 @@ function! s:Hier(clearonly)
 	endfor
 endfunction
 
+function! s:Toggle()
+    if g:hier_enabled == 1
+        let g:hier_enabled = 0
+        HierClear
+    else
+        let g:hier_enabled = 1
+        HierUpdate
+    endif
+endfunction
+
 command! -nargs=0 HierUpdate call s:Hier(0)
 command! -nargs=0 HierClear call s:Hier(1)
 
 command! -nargs=0 HierStart let g:hier_enabled = 1 | HierUpdate
 command! -nargs=0 HierStop let g:hier_enabled = 0 | HierClear
+command! -nargs=0 HierToggle call s:Toggle()
 
 augroup Hier
 	au!
